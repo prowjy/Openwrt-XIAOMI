@@ -22,11 +22,11 @@ on:
 #    types: [started]
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: master
   CONFIG_FILE: .config
   DIY_SH: diy.sh
-  FREE_UP_DISK: false
+  FREE_UP_DISK: true
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
@@ -121,3 +121,11 @@ jobs:
       with:
         name: OpenWrt_firmware
         path: ${{ env.FIRMWARE }}
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v1-release
+      with:
+        repo_token: ${{ secrets.repo_token }}
+        file: /home/runner/work/Xiaomi-mini/Xiaomi-mini/openwrt/bin/targets/ramips/mt7620/*.bin
+        tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true 
